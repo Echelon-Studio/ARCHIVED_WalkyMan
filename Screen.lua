@@ -6,25 +6,24 @@ function screen_object()
 	local index_stack = { }
 	
 	function handler:add_Object(object, index)
-		local index = index or object.y
-		index_stack[object] = index
-		self:update_Stack()
+		index_stack[object] = {index}
 	end
-	---------------
-	function handler:add_Object(object, index)
-		local index = index or object.y
-		if self.draw_stack[index]==nil then
-			handler.draw_stack[index] = { }
+	
+	function handler:remove_Object(object)
+		index_stack[object] = nil
+	end
+	
+	function handler:update_Stack()
+		self.draw_stack = { }
+		for i, v in pairs(index_stack) do
+			local index = v[1] or i.y
+			if self.draw_stack[index]==nil then
+				self.draw_stack[index] = { }
+			end
+			self.draw_stack[index][v] = v
 		end
-		self.draw_stack[index][object] = object
-		return
 	end
-	function handler:update_Object(object)
-	function handler:remove_Object(object, index)
-		local index = index or object.y
-		self.draw_stack[index][object] = nil
-		return
-	end
+
 	return handler
 end
 
