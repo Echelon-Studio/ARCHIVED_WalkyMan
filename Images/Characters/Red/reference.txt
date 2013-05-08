@@ -1,0 +1,2 @@
+First Word = Side Facing Player
+Second Word = Foot Behind Avatar
