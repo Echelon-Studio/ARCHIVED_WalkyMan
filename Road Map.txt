@@ -1,0 +1,9 @@
+Road Map:
+	New characters with death stuff
+	Shooting and stuff
+	main screen
+	Tiling background
+	Moving to areas
+	Generating obstacles
+	
+	
