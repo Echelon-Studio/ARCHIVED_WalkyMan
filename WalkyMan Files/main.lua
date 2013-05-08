@@ -61,7 +61,7 @@ screen:add_Object(Grass, -1)
 				return x, y
 			end, 'boundaries')
 			ai:SetMove(math.random(screen.width), math.random(screen.height))
-		screen:add_Object(ai.AI_Char, 2)
+		screen:add_Object(ai.AI_Char)
 	end
 	
 end
