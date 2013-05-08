@@ -1,7 +1,11 @@
 local Character_Types = { }
 local files = love.filesystem.enumerate("Images/Characters/")
 for _, v in pairs(files) do
-	Character_Types[_] = v
+	if v:match("%.[%w%p]+$") then
+	
+	else
+		Character_Types[#Character_Types+1] = v
+	end
 end
  local Character_Image_Labels = {
   ['RS'] = ("Images/Characters/CHAR/Right.png"),
@@ -27,7 +31,7 @@ function NewCharacter(Type, PosX, PosY)
 		function handler:PreloadImages()
 			Images = { }
 			for _, v in pairs(Character_Image_Labels) do
-				Images[_] = v:gsub("CHAR", Character_Types[Character_Type or 1])
+				Images[_] = love.graphics.newImage(string.gsub(v, "CHAR", Character_Types[Character_Type or 1]))
 			end
 		end
 	
@@ -99,6 +103,7 @@ function NewCharacter(Type, PosX, PosY)
 			local X = X or 0
 			local Y = Y or 0
 			self.x, self.y = self:CheckPosition(X, Y)
+			screen:update_Stack(self)
 			return self.x, self.y
 		end
 		function handler:getPos()
@@ -121,6 +126,7 @@ function NewCharacter(Type, PosX, PosY)
 			local X = X or 0
 			local Y = Y or 0
 			self.x, self.y = self:CheckPosition(self.x + X, self.y + Y)
+			screen:update_Stack(self)
 			return self.x, self.y
 		end
 		handler:PreloadImages()

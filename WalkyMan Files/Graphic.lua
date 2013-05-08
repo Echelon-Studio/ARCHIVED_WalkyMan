@@ -2,7 +2,7 @@ function Graphics_Object(Image, PosX, PosY)
 	local handler = { }
 	handler.x = PosX or 0
 	handler.y = PosY or 0
-	handler.object = Image
+	handler.object = love.graphics.newImage(Image)
 	local space_checks = { }
 	
 	function handler:getImage()
@@ -12,6 +12,7 @@ function Graphics_Object(Image, PosX, PosY)
 			local X = X or 0
 			local Y = Y or 0
 			self.x, self.y = self:CheckPosition(X, Y)
+			screen:update_Stack(self)
 			return self.x, self.y
 		end
 		function handler:getPos()
@@ -34,6 +35,7 @@ function Graphics_Object(Image, PosX, PosY)
 			local X = X or 0
 			local Y = Y or 0
 			self.x, self.y = self:CheckPosition(self.x + X, self.y + Y)
+			screen:update_Stack(self)
 			return self.x, self.y
 		end
 	return handler

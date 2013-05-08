@@ -5,7 +5,6 @@ require("AI")
 local running_time = 0
 love.graphics.setCaption("WalkyMan")
 love.graphics.toggleFullscreen()
-local screen;
 local Grass;
 local Character;
 local AIs = { };
@@ -34,9 +33,9 @@ Character:setChecker(
 		end
 		return x, y
 	end, 'boundaries')
-screen:add_Object(Character)
+screen:add_Object(Character, 1)
 Grass = Graphics_Object("Images/Map/Grass.png")
-screen:add_Object(Grass, -1)
+screen:add_Object(Grass, 0)
 	for i=1, math.random(10, 20) do
 		local ai = AI_Object(nil,nil,nil,screen.width, screen.height)
 		AIs[#AIs+1] = ai
@@ -61,7 +60,7 @@ screen:add_Object(Grass, -1)
 				return x, y
 			end, 'boundaries')
 			ai:SetMove(math.random(screen.width), math.random(screen.height))
-		screen:add_Object(ai.AI_Char)
+		screen:add_Object(ai.AI_Char, 3)
 	end
 	
 end
@@ -88,17 +87,21 @@ function love.draw()
                 love.graphics.draw(love.graphics.newImage(Character_Image_Labels[v.char]:gsub("CHAR", v.type)), v.x, v.y)
             end
         end]]
+		--[[
 		for _, v in pairs(screen.draw_stack) do
 			for __, vv in pairs(v) do
-				if type(vv.object)~="string" then
-					error(tostring(vv).." "..type(vv.object))
+			
+				if type(vv.object)=="userdata" then
+					love.graphics.draw(vv.object, vv.x, vv.y)
 				end
-				local Image = love.graphics.newImage(vv.object)
-				love.graphics.draw(Image, vv.x, vv.y)
 			end
+		end]]
+		screen:sort_Stack()
+		for _, v in pairs(screen.index_stack) do
+			love.graphics.draw(v[2].object, v[2].x, v[2].y)
 		end
 		for _, v in pairs(print_stack) do
-			love.graphics.print(v, 0, _ - 1 * 10)
+			love.graphics.print(v, 0, (_ - 1) * 10)
 		end
 end
 print("Press ESC to exit")
@@ -112,6 +115,7 @@ function Clamp(num)
 end
 
 function love.update(dt)
+	--screen:update_Stack()
 --	server_update_time = server_update_time + dt
 	running_time = running_time + dt
     if love.keyboard.isDown("w") then
