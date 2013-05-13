@@ -33,9 +33,9 @@ Character:setChecker(
 		end
 		return x, y
 	end, 'boundaries')
-screen:add_Object(Character, 1)
+screen:add_Object(Character, 3)
 Grass = Graphics_Object("Images/Map/Grass.png")
-screen:add_Object(Grass, 0)
+screen:add_Object(Grass, "Background")
 	for i=1, math.random(10, 20) do
 		local ai = AI_Object(nil,nil,nil,screen.width, screen.height)
 		AIs[#AIs+1] = ai
@@ -87,19 +87,15 @@ function love.draw()
                 love.graphics.draw(love.graphics.newImage(Character_Image_Labels[v.char]:gsub("CHAR", v.type)), v.x, v.y)
             end
         end]]
-		--[[
 		for _, v in pairs(screen.draw_stack) do
 			for __, vv in pairs(v) do
-			
 				if type(vv.object)=="userdata" then
 					love.graphics.draw(vv.object, vv.x, vv.y)
 				end
 			end
-		end]]
-		screen:sort_Stack()
-		for _, v in pairs(screen.index_stack) do
-			love.graphics.draw(v[2].object, v[2].x, v[2].y)
 		end
+	--	screen:sort_Stack()
+
 		for _, v in pairs(print_stack) do
 			love.graphics.print(v, 0, (_ - 1) * 10)
 		end

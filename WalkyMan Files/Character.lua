@@ -126,7 +126,7 @@ function NewCharacter(Type, PosX, PosY)
 			local X = X or 0
 			local Y = Y or 0
 			self.x, self.y = self:CheckPosition(self.x + X, self.y + Y)
-			screen:update_Stack(self)
+	--		screen:update_Stack(self)
 			return self.x, self.y
 		end
 		handler:PreloadImages()
