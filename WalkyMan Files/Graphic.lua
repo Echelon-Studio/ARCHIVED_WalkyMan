@@ -1,4 +1,5 @@
-function Graphics_Object(Image, PosX, PosY, screen)
+return ({
+new = function(Image, screen, Index, PosX, PosY)
 	local handler = { }
 	handler.x = PosX or 0
 	handler.y = PosY or 0
@@ -32,6 +33,11 @@ function Graphics_Object(Image, PosX, PosY, screen)
 			end
 			return X, Y
 		end
+		function handler:Draw()
+			if type(self.object)=="userdata" then
+				love.graphics.draw(self.object, self.x, self.y)
+			end
+		end
 		function handler:addPos(X, Y)
 			local X = X or 0
 			local Y = Y or 0
@@ -39,6 +45,7 @@ function Graphics_Object(Image, PosX, PosY, screen)
 --			screen:update_Stack(self)
 			return self.x, self.y
 		end
-	screen:add_Object(object)
+	screen:add_Object(handler, Index)
 	return handler
 end
+})

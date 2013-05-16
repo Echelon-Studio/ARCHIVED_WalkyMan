@@ -1,4 +1,5 @@
-function NewRectangle(settings, screen)
+return ({
+new = function(settings, screen)
 	local index = settings.Index or 3
 	local Physics = settings.Physics
 	local object = { 
@@ -18,6 +19,12 @@ function NewRectangle(settings, screen)
 		object.Physics.body = love.physics.newBody(Physics_World, object.Position[1] - (object.Size[1]/2), object.Position[2] - (object.Size[2]/2), object.Physics_Mode)
 		object.Physics.shape =  love.physics.newRectangleShape(object.Size[1], object.Size[2])
 		object.Physics.fixture = love.physics.newFixture(object.Physics.body, object.Physics.shape)
+	end
+
+	function object:Draw()
+		if type(self.object)=="userdata" then
+			love.graphics.draw(self.object, self.x, self.y)
+		end
 	end
 	
 	function object:Destroy()
@@ -57,3 +64,4 @@ function NewRectangle(settings, screen)
 	screen:add_Object(object, object.Index)
 	return object
 end
+})

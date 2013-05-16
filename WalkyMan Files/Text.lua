@@ -1,4 +1,5 @@
-function new_Text(text, settings, screen)
+return ({
+new = function(text, settings, screen)
 	local object = {
 		['Text'] = text,
 		['Position'] = type(settings.Position)=='table' and settings.Position or {0, 0},
@@ -36,3 +37,4 @@ function new_Text(text, settings, screen)
 	
 	return object
 end
+})

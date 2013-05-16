@@ -1,7 +1,8 @@
-require("Screen")
-require("Character")
-require("Graphic")
-require("AI")
+lib = { }
+lib.Screen = require("Screen")
+lib.Character = require("Character")
+lib.Graphic = require("Graphic")
+lib.AI = require("AI")
 local running_time = 0
 love.graphics.setCaption("WalkyMan")
 love.graphics.toggleFullscreen()
@@ -11,8 +12,8 @@ local AIs = { };
 
 
 function love.load()
-screen = screen_object()
-Character = NewCharacter(Type, PosX, PosY)
+screen = lib.Screen.new()
+Character = lib.Character.new(Type, screen, PosX, PosY)
 Character:setChecker(
 	function(x, y)
 		return x<screen.width and x>0
@@ -33,11 +34,9 @@ Character:setChecker(
 		end
 		return x, y
 	end, 'boundaries')
-screen:add_Object(Character, 3)
-Grass = Graphics_Object("Images/Map/Grass.png")
-screen:add_Object(Grass, "Background")
+Grass = lib.Graphic.new("Images/Map/Grass.png", screen, "Background")
 	for i=1, math.random(10, 20) do
-		local ai = AI_Object(nil,nil,nil,screen.width, screen.height)
+		local ai = lib.AI.new(nil, screen, nil,nil,screen.width, screen.height)
 		AIs[#AIs+1] = ai
 		ai.AI_Char:setChecker(
 			function(x, y)
@@ -60,7 +59,6 @@ screen:add_Object(Grass, "Background")
 				return x, y
 			end, 'boundaries')
 			ai:SetMove(math.random(screen.width), math.random(screen.height))
-		screen:add_Object(ai.AI_Char, 3)
 	end
 	
 end
@@ -72,8 +70,8 @@ local function print(...)
 	for _, v in pairs({...}) do
 		eched = eched .. " "..tostring(v)
 	end
-	for i=1, print_stack_max do
-		print_stack[i] = (i==print_stack_max and eched or print_stack[i + 1])
+	for i=print_stack_max, 1, -1 do
+		print_stack[i] = (i==1 and eched or print_stack[i - 1])
 	end
 end
 	
@@ -89,11 +87,17 @@ function love.draw()
         end]]
 		for _, v in pairs(screen.draw_stack) do
 			for __, vv in pairs(v) do
+				vv:Draw()
+			end
+		end
+		--[[
+		for _, v in pairs(screen.draw_stack) do
+			for __, vv in pairs(v) do
 				if type(vv.object)=="userdata" then
 					love.graphics.draw(vv.object, vv.x, vv.y)
 				end
 			end
-		end
+		end]]
 	--	screen:sort_Stack()
 
 		for _, v in pairs(print_stack) do

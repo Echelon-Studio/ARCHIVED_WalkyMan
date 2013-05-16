@@ -1,5 +1,6 @@
-function AI_Object(Type, PosX, PosY, MaxX, MaxY)
-	local AI_Char = NewCharacter(Type, PosX, PosY)
+return ({
+new = function(Type, screen, PosX, PosY, MaxX, MaxY)
+	local AI_Char = lib.Character.new(Type, screen, PosX, PosY)
 	local handler = { }
 	handler.AI_Char = AI_Char
 	local MoveCount = 0
@@ -50,7 +51,7 @@ function AI_Object(Type, PosX, PosY, MaxX, MaxY)
 	end
 	return handler
 end
-
+})
 
 				
 			

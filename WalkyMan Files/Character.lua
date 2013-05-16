@@ -23,8 +23,8 @@ end
                 ['BR'] = ("Images/Characters/CHAR/BackRight.png"),
                 ['BL'] = ("Images/Characters/CHAR/BackLeft.png")
             }
-
-function NewCharacter(Type, PosX, PosY)
+return ({
+new = function(Type, screen, PosX, PosY, Index)
 			local handler = { }
         local Character_Type = Type or math.random(#Character_Types)
 		local Images = { }
@@ -60,6 +60,13 @@ function NewCharacter(Type, PosX, PosY)
 		function handler:getChar()
 			return Character
 		end
+		
+		function handler:Draw()
+			if type(self.object)=="userdata" then
+				love.graphics.draw(self.object, self.x, self.y)
+			end
+		end
+		
 		function handler:getImage()
 			handler.object = Images[Character]
 			return Images[Character]
@@ -130,8 +137,9 @@ function NewCharacter(Type, PosX, PosY)
 			return self.x, self.y
 		end
 		handler:PreloadImages()
+		screen:add_Object(handler, Index or 3)
 	return handler
 end
-		
+})
 			
 		
