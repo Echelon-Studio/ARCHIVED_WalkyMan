@@ -1,0 +1,3 @@
+-- MAPS --
+
+local Maps = { }

@@ -1,37 +1,61 @@
 local Character_Types = { }
 local files = love.filesystem.enumerate("Images/Characters/")
+
+function PictureToQuads(filename)
+	local img = love.graphics.newImage(filename)
+	-- x 14 y 20
+	-- FBRL
+	-- "  " - SRL
+	-- 12 total
+	local Tab = {
+		'FS',
+		'FR',
+		'FL',
+		'BS',
+		'BR',
+		'BL',
+		'RS',
+		'RR',
+		'RL',
+		'LS',
+		'LR',
+		'LL'
+	}
+	for _, v in pairs(Tab) do
+		
 for _, v in pairs(files) do
-	if v:match("%.[%w%p]+$") then
-	
+	if v:match("%.([%w%p]+)$") then
+		if v:match("%.([%w%p]+)$")=="png" then
+			Character_Types[#Character_Types + 1] = PictureToQuads(v)
+		end
 	else
-		Character_Types[#Character_Types+1] = v
+		Character_Types[#Character_Types+1] = FolderToPictures(v)
 	end
 end
- local Character_Image_Labels = {
-  ['RS'] = ("Images/Characters/CHAR/Right.png"),
-   ['RR'] = ("Images/Characters/CHAR/RightRight.png"),
+
+local Character_Image_Labels = {
+	['RS'] = ("Images/Characters/CHAR/Right.png"),
+	['RR'] = ("Images/Characters/CHAR/RightRight.png"),
 	['RL'] = ("Images/Characters/CHAR/RightLeft.png"),
-  --   ['RS'] = ("Images/Characters/CHAR/Right.png"),
-   ['LS'] = ("Images/Characters/CHAR/Left.png"),
+	['LS'] = ("Images/Characters/CHAR/Left.png"),
 	['LL'] = ("Images/Characters/CHAR/LeftLeft.png"),
-  --    ['LS'] = ("Images/Characters/CHAR/Left.png"),
-          ['LR'] = ("Images/Characters/CHAR/LeftRight.png"),
-  ['FS'] = ("Images/Characters/CHAR/Front.png"),
-                ['FR'] = ("Images/Characters/CHAR/FrontRight.png"),
-                ['FL'] = ("Images/Characters/CHAR/FrontLeft.png"),
-                ['BS'] = ("Images/Characters/CHAR/Back.png"),
-                ['BR'] = ("Images/Characters/CHAR/BackRight.png"),
-                ['BL'] = ("Images/Characters/CHAR/BackLeft.png")
-            }
+	['LR'] = ("Images/Characters/CHAR/LeftRight.png"),
+	['FS'] = ("Images/Characters/CHAR/Front.png"),
+	['FR'] = ("Images/Characters/CHAR/FrontRight.png"),
+	['FL'] = ("Images/Characters/CHAR/FrontLeft.png"),
+	['BS'] = ("Images/Characters/CHAR/Back.png"),
+	['BR'] = ("Images/Characters/CHAR/BackRight.png"),
+	['BL'] = ("Images/Characters/CHAR/BackLeft.png")
+}
 return ({
 new = function(Type, screen, PosX, PosY, Index)
-			local handler = { }
+		local handler = { }
         local Character_Type = Type or math.random(#Character_Types)
 		local Images = { }
 		function handler:PreloadImages()
 			Images = { }
 			for _, v in pairs(Character_Image_Labels) do
-				Images[_] = love.graphics.newImage(string.gsub(v, "CHAR", Character_Types[Character_Type or 1]))
+				Images[_] = Character_Types[_] --love.graphics.newImage(string.gsub(v, "CHAR", Character_Types[Character_Type or 1]))
 			end
 		end
 	
